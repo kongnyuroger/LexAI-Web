@@ -5,25 +5,44 @@ import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/auth/LoginPage'
 import RegisterPage from '@/pages/auth/RegisterPage'
 import DashboardPage from '@/pages/app/DashboardPage'
+import { GuestRoute } from '@/components/auth/ProtectedRoute'
 
-// Lazy-load the dev-only component showcase (stripped from production builds)
-const ComponentsPage =
-  import.meta.env.DEV
-    ? (await import('@/pages/dev/ComponentsPage')).default
-    : () => <Navigate to="/" replace />
+// Dev-only component showcase — tree-shaken in production
+const devRoutes = import.meta.env.DEV
+  ? [
+      {
+        path: '/dev/components',
+        lazy: async () => {
+          const { default: ComponentsPage } = await import('@/pages/dev/ComponentsPage')
+          return { Component: ComponentsPage }
+        },
+      },
+    ]
+  : []
 
 const router = createBrowserRouter([
-  // Dev-only component showcase
-  ...(import.meta.env.DEV
-    ? [{ path: '/dev/components', element: <ComponentsPage /> }]
-    : []),
+  ...devRoutes,
 
   {
     element: <PublicLayout />,
     children: [
       { path: '/', element: <LandingPage /> },
-      { path: '/login', element: <LoginPage /> },
-      { path: '/register', element: <RegisterPage /> },
+      {
+        path: '/login',
+        element: (
+          <GuestRoute>
+            <LoginPage />
+          </GuestRoute>
+        ),
+      },
+      {
+        path: '/register',
+        element: (
+          <GuestRoute>
+            <RegisterPage />
+          </GuestRoute>
+        ),
+      },
     ],
   },
   {
