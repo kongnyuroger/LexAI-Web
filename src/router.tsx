@@ -5,6 +5,7 @@ import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/auth/LoginPage'
 import RegisterPage from '@/pages/auth/RegisterPage'
 import DashboardPage from '@/pages/app/DashboardPage'
+import UploadPage from '@/pages/app/UploadPage'
 import { GuestRoute } from '@/components/auth/ProtectedRoute'
 
 // Dev-only component showcase — tree-shaken in production
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
     element: <AppLayout />,
     children: [
       { path: '/dashboard', element: <DashboardPage /> },
+      { path: '/upload', element: <UploadPage /> },
       { path: '/app', element: <Navigate to="/dashboard" replace /> },
     ],
   },
