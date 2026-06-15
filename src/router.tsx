@@ -8,6 +8,7 @@ import DashboardPage from '@/pages/app/DashboardPage'
 import UploadPage from '@/pages/app/UploadPage'
 import DocumentDetailPage from '@/pages/app/DocumentDetailPage'
 import DocumentChatPage from '@/pages/app/DocumentChatPage'
+import ProfilePage from '@/pages/app/ProfilePage'
 import { GuestRoute } from '@/components/auth/ProtectedRoute'
 
 // Dev-only component showcase — tree-shaken in production
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
       { path: '/upload', element: <UploadPage /> },
       { path: '/documents/:id', element: <DocumentDetailPage /> },
       { path: '/documents/:id/chat', element: <DocumentChatPage /> },
+      { path: '/profile', element: <ProfilePage /> },
       { path: '/app', element: <Navigate to="/dashboard" replace /> },
     ],
   },

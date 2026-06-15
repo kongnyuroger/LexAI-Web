@@ -19,6 +19,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
+  { label: 'Profile & plan', to: '/profile', icon: User },
 ]
 
 interface AppShellProps {
@@ -53,7 +54,7 @@ export default function AppShell({ children, userName, onLogout }: AppShellProps
         </button>
 
         {/* Logo */}
-        <Link to="/dashboard" className="flex items-center gap-2 flex-shrink-0">
+        <Link to="/dashboard" className="flex items-center gap-2 shrink-0">
           <Scale className="w-6 h-6 text-[#1E4D8C]" />
           <span className="font-bold text-[#1E4D8C] text-lg hidden sm:block">LexAI</span>
         </Link>
@@ -68,7 +69,7 @@ export default function AppShell({ children, userName, onLogout }: AppShellProps
             aria-haspopup="true"
             className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors text-sm text-slate-700 font-medium"
           >
-            <span className="w-7 h-7 rounded-full bg-[#1E4D8C] text-white flex items-center justify-center text-xs font-semibold flex-shrink-0">
+            <span className="w-7 h-7 rounded-full bg-[#1E4D8C] text-white flex items-center justify-center text-xs font-semibold shrink-0">
               {userName ? userName[0].toUpperCase() : <User className="w-4 h-4" />}
             </span>
             <span className="hidden sm:block max-w-32 truncate">{userName ?? 'Account'}</span>
@@ -104,7 +105,7 @@ export default function AppShell({ children, userName, onLogout }: AppShellProps
         {/* ── Sidebar (desktop) ── */}
         <nav
           aria-label="Main navigation"
-          className="hidden md:flex flex-col w-56 bg-white border-r border-slate-200 p-3 gap-1 flex-shrink-0"
+          className="hidden md:flex flex-col w-56 bg-white border-r border-slate-200 p-3 gap-1 shrink-0"
         >
           <SidebarNav items={navItems} />
         </nav>
@@ -169,7 +170,7 @@ function SidebarNav({
             )
           }
         >
-          <Icon className="w-4 h-4 flex-shrink-0" />
+          <Icon className="w-4 h-4 shrink-0" />
           {label}
         </NavLink>
       ))}
