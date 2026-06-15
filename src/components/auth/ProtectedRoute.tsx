@@ -30,16 +30,21 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 export function GuestRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuthStore()
 
+  // Check isAuthenticated first: if the store has persisted auth state the user
+  // should be sent to the dashboard immediately, without waiting for isLoading.
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />
+  }
+
+  // isLoading is true only when a token exists and is being validated (AppLayout
+  // mounts useSessionRestore). If there is no token, isLoading is false and the
+  // login/register page renders without any delay.
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Spinner size="lg" className="text-[#1E4D8C]" label="Restoring session…" />
       </div>
     )
-  }
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />
   }
 
   return <>{children}</>

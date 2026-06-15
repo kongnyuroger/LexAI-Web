@@ -8,6 +8,7 @@ import { getChatHistory, sendChatMessage } from '@/lib/analysisApi'
 import { useToast } from '@/contexts/ToastContext'
 import type { ChatMessage } from '@/types'
 import { cn } from '@/lib/utils'
+import MessageContent from '@/components/chat/MessageContent'
 
 // ── Starter question chips ────────────────────────────────────────────────────
 
@@ -24,12 +25,17 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === 'user'
 
   return (
-    <div className={cn('flex gap-3 max-w-[85%]', isUser && 'flex-row-reverse self-end')}>
+    <div
+      className={cn(
+        'flex gap-3',
+        isUser ? 'flex-row-reverse self-end max-w-[80%]' : 'self-start w-full max-w-[92%]'
+      )}
+    >
       {/* Avatar */}
       <div
         className={cn(
-          'w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5',
-          isUser ? 'bg-[#1E4D8C] text-white' : 'bg-slate-100 text-slate-500'
+          'w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1',
+          isUser ? 'bg-[#1E4D8C] text-white' : 'bg-[#1E4D8C]/10 text-[#1E4D8C]'
         )}
         aria-hidden="true"
       >
@@ -37,16 +43,21 @@ function MessageBubble({ message }: { message: ChatMessage }) {
       </div>
 
       {/* Bubble */}
-      <div
-        className={cn(
-          'rounded-2xl px-4 py-3 text-sm leading-relaxed',
-          isUser
-            ? 'bg-[#1E4D8C] text-white rounded-tr-sm'
-            : 'bg-white border border-slate-200 text-slate-800 rounded-tl-sm shadow-sm'
-        )}
-      >
-        {message.content}
-      </div>
+      {isUser ? (
+        <div className="rounded-2xl rounded-tr-sm px-4 py-3 bg-[#1E4D8C] text-white">
+          <MessageContent content={message.content} isAssistant={false} className="text-white [&_p]:text-white" />
+        </div>
+      ) : (
+        <div className="rounded-2xl rounded-tl-sm bg-white border border-slate-200 shadow-sm overflow-hidden">
+          {/* Subtle navy accent bar on the left */}
+          <div className="flex">
+            <div className="w-1 shrink-0 bg-[#1E4D8C]/20 rounded-l-2xl" />
+            <div className="px-4 py-3.5 flex-1">
+              <MessageContent content={message.content} isAssistant />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

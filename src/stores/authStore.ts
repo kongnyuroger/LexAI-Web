@@ -25,7 +25,9 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
-      isLoading: true,
+      // Only mark as loading if there is a token to validate — no token means
+      // there is nothing to restore, so public pages (login/register) render immediately.
+      isLoading: !!tokenStorage.getAccess(),
 
       setUser: (user) => set({ user, isAuthenticated: true, isLoading: false }),
 
