@@ -6,7 +6,18 @@ import LoginPage from '@/pages/auth/LoginPage'
 import RegisterPage from '@/pages/auth/RegisterPage'
 import DashboardPage from '@/pages/app/DashboardPage'
 
+// Lazy-load the dev-only component showcase (stripped from production builds)
+const ComponentsPage =
+  import.meta.env.DEV
+    ? (await import('@/pages/dev/ComponentsPage')).default
+    : () => <Navigate to="/" replace />
+
 const router = createBrowserRouter([
+  // Dev-only component showcase
+  ...(import.meta.env.DEV
+    ? [{ path: '/dev/components', element: <ComponentsPage /> }]
+    : []),
+
   {
     element: <PublicLayout />,
     children: [
@@ -22,7 +33,7 @@ const router = createBrowserRouter([
       { path: '/app', element: <Navigate to="/dashboard" replace /> },
     ],
   },
-  // 404 catch-all — replaced in Task 10 with a proper NotFoundPage
+  // 404 — replaced with proper NotFoundPage in Task 10
   { path: '*', element: <Navigate to="/" replace /> },
 ])
 
