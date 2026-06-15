@@ -103,6 +103,11 @@ api.interceptors.response.use(
       }
     }
 
+    // Emit a global event for 5xx errors so the UI can show a generic toast
+    if (error.response && error.response.status >= 500) {
+      window.dispatchEvent(new CustomEvent('lexai:server-error'))
+    }
+
     return Promise.reject(error)
   }
 )

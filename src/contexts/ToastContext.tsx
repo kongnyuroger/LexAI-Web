@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
   type ReactNode,
@@ -117,6 +118,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     },
     [removeToast]
   )
+
+  // Global 5xx handler fired by the Axios response interceptor
+  useEffect(() => {
+    const handler = () =>
+      addToast({
+        type: 'error',
+        title: 'Something went wrong',
+        message: 'A server error occurred. Please try again in a moment.',
+      })
+    window.addEventListener('lexai:server-error', handler)
+    return () => window.removeEventListener('lexai:server-error', handler)
+  }, [addToast])
 
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>

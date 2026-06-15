@@ -9,6 +9,7 @@ import UploadPage from '@/pages/app/UploadPage'
 import DocumentDetailPage from '@/pages/app/DocumentDetailPage'
 import DocumentChatPage from '@/pages/app/DocumentChatPage'
 import ProfilePage from '@/pages/app/ProfilePage'
+import NotFoundPage from '@/pages/NotFoundPage'
 import { GuestRoute } from '@/components/auth/ProtectedRoute'
 
 // Dev-only component showcase — tree-shaken in production
@@ -60,8 +61,7 @@ const router = createBrowserRouter([
       { path: '/app', element: <Navigate to="/dashboard" replace /> },
     ],
   },
-  // 404 — replaced with proper NotFoundPage in Task 10
-  { path: '*', element: <Navigate to="/" replace /> },
+  { path: '*', element: <NotFoundPage /> },
 ])
 
 export default router
