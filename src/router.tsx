@@ -6,6 +6,7 @@ import LoginPage from '@/pages/auth/LoginPage'
 import RegisterPage from '@/pages/auth/RegisterPage'
 import DashboardPage from '@/pages/app/DashboardPage'
 import UploadPage from '@/pages/app/UploadPage'
+import DocumentDetailPage from '@/pages/app/DocumentDetailPage'
 import { GuestRoute } from '@/components/auth/ProtectedRoute'
 
 // Dev-only component showcase — tree-shaken in production
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/dashboard', element: <DashboardPage /> },
       { path: '/upload', element: <UploadPage /> },
+      { path: '/documents/:id', element: <DocumentDetailPage /> },
       { path: '/app', element: <Navigate to="/dashboard" replace /> },
     ],
   },
