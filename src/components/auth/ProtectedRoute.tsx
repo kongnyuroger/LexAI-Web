@@ -14,7 +14,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Spinner size="lg" className="text-[#1E4D8C]" label="Restoring session…" />
+        <Spinner size="lg" className="text-primary-900" label="Restoring session…" />
       </div>
     )
   }
@@ -42,7 +42,7 @@ export function GuestRoute({ children }: ProtectedRouteProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Spinner size="lg" className="text-[#1E4D8C]" label="Restoring session…" />
+        <Spinner size="lg" className="text-primary-900" label="Restoring session…" />
       </div>
     )
   }

@@ -172,14 +172,14 @@ interface MessageContentProps {
 export default function MessageContent({ content, isAssistant = false, className }: MessageContentProps) {
   if (!isAssistant) {
     return (
-      <p className={cn('text-sm leading-relaxed whitespace-pre-wrap', className)}>{content}</p>
+      <p className={cn('text-base leading-relaxed whitespace-pre-wrap', className)}>{content}</p>
     )
   }
 
   const blocks = parseBlocks(content)
 
   return (
-    <div className={cn('text-sm space-y-3', className)}>
+    <div className={cn('text-base space-y-3', className)}>
       {blocks.map((block, i) => {
         switch (block.type) {
           case 'heading':
@@ -215,7 +215,7 @@ export default function MessageContent({ content, isAssistant = false, className
               <ol key={i} className="list-none space-y-2.5 pl-0">
                 {block.items.map((item, j) => (
                   <li key={j} className="flex gap-3 leading-relaxed">
-                    <span className="shrink-0 w-5 h-5 rounded-full bg-[#1E4D8C]/10 text-[#1E4D8C] text-xs font-semibold flex items-center justify-center mt-0.5">
+                    <span className="shrink-0 w-5 h-5 rounded-full bg-primary-900/10 text-primary-900 text-xs font-semibold flex items-center justify-center mt-0.5">
                       {j + 1}
                     </span>
                     <span className="text-slate-700 flex-1">{parseInline(item)}</span>
@@ -229,7 +229,7 @@ export default function MessageContent({ content, isAssistant = false, className
               <ul key={i} className="space-y-2 pl-0">
                 {block.items.map((item, j) => (
                   <li key={j} className="flex gap-2.5 leading-relaxed">
-                    <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#1E4D8C]/50 mt-2.5" />
+                    <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-primary-900/50 mt-2.5" />
                     <span className="text-slate-700 flex-1">{parseInline(item)}</span>
                   </li>
                 ))}

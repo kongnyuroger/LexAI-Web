@@ -38,7 +38,7 @@ function LandingNav() {
           </Link>
           <Link
             to="/register"
-            className="inline-flex items-center justify-center h-9 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
+            className="inline-flex items-center justify-center h-9 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-primary-950 hover:shadow-glow transition-all duration-200"
           >
             Get started free
           </Link>
@@ -76,7 +76,7 @@ function Hero() {
       >
         <motion.div
           variants={fadeUp}
-          className="inline-flex items-center gap-2 bg-primary-900/8 text-primary-900 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-7"
+          className="inline-flex items-center gap-2 bg-primary-900/8 text-primary-900 text-xs font-semibold uppercase px-3.5 py-1.5 rounded-full mb-8 tracking-widest"
         >
           <Zap className="w-3.5 h-3.5" />
           AI-powered legal document analysis
@@ -84,7 +84,7 @@ function Hero() {
 
         <motion.h1
           variants={fadeUp}
-          className="font-display text-4xl md:text-6xl lg:text-7xl font-semibold text-slate-900 leading-[1.08] mb-7 tracking-tight"
+          className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold text-slate-900 leading-[1.02] mb-8 tracking-[-0.03em]"
         >
           Understand any contract{' '}
           <span className="text-gradient-primary">before you sign it</span>
@@ -93,7 +93,7 @@ function Hero() {
 
         <motion.p
           variants={fadeUp}
-          className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-xl md:text-2xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           Upload a legal document and LexAI will explain what it means, flag the risky clauses,
           and answer your questions in plain English. No legal jargon. No surprises.
@@ -102,7 +102,7 @@ function Hero() {
         <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             to="/register"
-            className="group inline-flex items-center justify-center gap-2 h-13 px-7 rounded-xl text-base font-semibold bg-primary-900 text-white shadow-soft-lg hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
+            className="group inline-flex items-center justify-center gap-2 h-13 px-7 rounded-xl text-base font-semibold bg-primary-900 text-white shadow-soft-lg hover:bg-primary-950 hover:shadow-glow transition-all duration-200"
           >
             Analyse my document free
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -170,7 +170,7 @@ function HowItWorks() {
           <motion.h2
             variants={fadeUp}
             id="how-it-works-heading"
-            className="font-display text-3xl md:text-4xl font-semibold text-slate-900 mb-3 tracking-tight"
+            className="font-display text-4xl md:text-5xl font-semibold text-slate-900 mb-3 tracking-tight"
           >
             How it works
           </motion.h2>
@@ -320,7 +320,7 @@ function TrustSection() {
         <motion.h2
           variants={fadeUp}
           id="trust-heading"
-          className="font-display text-2xl md:text-3xl font-semibold text-slate-900 mb-3 tracking-tight"
+          className="font-display text-3xl md:text-4xl font-semibold text-slate-900 mb-3 tracking-tight"
         >
           General information, not legal advice
         </motion.h2>
@@ -383,16 +383,16 @@ function FinalCTA() {
         transition={{ duration: 0.5, ease: easePremium }}
         className="relative max-w-2xl mx-auto text-center"
       >
-        <h2 id="cta-heading" className="font-display text-3xl md:text-4xl font-semibold text-white mb-4 tracking-tight">
+        <h2 id="cta-heading" className="font-display text-4xl md:text-5xl font-semibold text-white mb-4 tracking-tight">
           Ready to understand your contract?
         </h2>
-        <p className="text-blue-200 text-lg mb-8">
+        <p className="text-primary-200 text-lg mb-8">
           Upload your first document free. No credit card, no commitment.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             to="/register"
-            className="group inline-flex items-center justify-center gap-2 h-13 px-7 rounded-xl text-base font-semibold bg-white text-primary-900 shadow-soft-lg hover:bg-blue-50 transition-all duration-200"
+            className="group inline-flex items-center justify-center gap-2 h-13 px-7 rounded-xl text-base font-semibold bg-white text-primary-900 shadow-soft-lg hover:bg-primary-50 transition-all duration-200"
           >
             Get started free
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />

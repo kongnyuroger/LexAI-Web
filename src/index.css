@@ -1,23 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  /* ─── Brand: trustworthy navy ─── */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1E4D8C;
-  --color-primary: #1E4D8C;
+  /* ─── Brand: deep forest green — ledger/leather feel, deliberately not
+     navy/indigo/violet (the default "AI SaaS" hues). Distinct enough in
+     lightness/saturation from the risk-low green below to avoid clashing. ─── */
+  --color-primary-50: #f1f6f3;
+  --color-primary-100: #dceae1;
+  --color-primary-200: #b9d5c3;
+  --color-primary-300: #8fba9f;
+  --color-primary-400: #5f9876;
+  --color-primary-500: #3f7a57;
+  --color-primary-600: #2f6244;
+  --color-primary-700: #264f38;
+  --color-primary-800: #1f3f2e;
+  --color-primary-900: #1a3327;
+  --color-primary-950: #0f2118;
+  --color-primary: #1a3327;
 
-  /* ─── Accent: soft sky used sparingly for gradients/glows ─── */
-  --color-accent-300: #a5d8ff;
-  --color-accent-400: #74c0fc;
-  --color-accent-500: #4dabf7;
+  /* ─── Accent: warm gold used sparingly for gradients/glows — pairs with
+     the forest green like a wax seal on a legal document ─── */
+  --color-accent-300: #e8cd7a;
+  --color-accent-400: #d4ae4c;
+  --color-accent-500: #bc9430;
 
   /* ─── Risk severity semantic colors ─── */
   --color-risk-high: #dc2626;
@@ -41,7 +45,7 @@
   --shadow-soft-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 1px 0 rgb(15 23 42 / 0.03);
   --shadow-soft: 0 4px 16px -4px rgb(15 23 42 / 0.08), 0 2px 6px -2px rgb(15 23 42 / 0.05);
   --shadow-soft-lg: 0 12px 32px -8px rgb(15 23 42 / 0.12), 0 4px 12px -4px rgb(15 23 42 / 0.06);
-  --shadow-glow: 0 0 0 1px rgb(30 77 140 / 0.06), 0 8px 24px -4px rgb(30 77 140 / 0.18);
+  --shadow-glow: 0 0 0 1px rgb(26 51 39 / 0.08), 0 8px 24px -4px rgb(26 51 39 / 0.22);
 
   /* ─── Easing ─── */
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
@@ -102,7 +106,7 @@
   .bg-glow {
     background-image: radial-gradient(
       ellipse 80% 50% at 50% -10%,
-      rgb(30 77 140 / 0.12),
+      rgb(26 51 39 / 0.1),
       transparent 60%
     );
   }

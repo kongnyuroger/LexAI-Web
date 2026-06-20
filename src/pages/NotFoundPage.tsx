@@ -32,7 +32,7 @@ export default function NotFoundPage() {
         <motion.div variants={fadeUp}>
           <Link
             to="/dashboard"
-            className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-primary-950 hover:shadow-glow transition-all duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to dashboard

@@ -9,7 +9,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-primary-900 text-white border-transparent shadow-soft hover:bg-[#173d70] hover:shadow-glow focus-visible:ring-primary-900',
+    'bg-primary-900 text-white border-transparent shadow-soft hover:bg-primary-950 hover:shadow-glow focus-visible:ring-primary-900',
   secondary:
     'bg-white text-slate-700 border-slate-200 shadow-soft-sm hover:bg-slate-50 hover:border-slate-300 focus-visible:ring-slate-400',
   ghost:

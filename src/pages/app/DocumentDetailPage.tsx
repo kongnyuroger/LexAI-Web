@@ -67,7 +67,7 @@ function SummarySection({ summary }: { summary: DocumentAnalysis['summary'] }) {
                   </div>
                   <ul className="space-y-1">
                     {items.map((item, i) => (
-                      <li key={i} className="text-sm text-slate-700 leading-relaxed">
+                      <li key={i} className="text-base text-slate-700 leading-relaxed">
                         {items.length > 1 && <span className="text-slate-400 mr-1">·</span>}
                         {item}
                       </li>
@@ -109,12 +109,12 @@ function RiskFlagCard({ flag }: { flag: RiskFlag }) {
       </div>
 
       {/* Clause text */}
-      <blockquote className="border-l-2 border-slate-200 pl-3 mb-3 text-sm text-slate-600 italic leading-relaxed">
+      <blockquote className="border-l-2 border-slate-200 pl-3 mb-3 text-base text-slate-600 italic leading-relaxed">
         "{flag.clauseText}"
       </blockquote>
 
       {/* Plain-language explanation */}
-      <p className="text-sm text-slate-700 leading-relaxed">{flag.explanation}</p>
+      <p className="text-base text-slate-700 leading-relaxed">{flag.explanation}</p>
     </motion.div>
   )
 }
