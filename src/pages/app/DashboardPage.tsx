@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
-import { FileText, Upload, RefreshCw, AlertCircle, Clock } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { FileText, Upload, RefreshCw, AlertCircle, Clock, Sparkles } from 'lucide-react'
 import { useDocuments, useUsage } from '@/hooks/useDocuments'
 import { Button, Card, CardContent, EmptyState, StatusBadge, SkeletonCard, Skeleton } from '@/components/ui'
 import type { LexDocument } from '@/types'
 import { formatDistanceToNow } from '@/lib/dateUtils'
+import { fadeUp, staggerContainer } from '@/lib/motion'
 
 // ── Usage widget ────────────────────────────────────────────────────────────
 
@@ -28,12 +30,12 @@ function UsageWidget() {
 
   return (
     <Card className="mb-6">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-3">
         <p className="text-sm font-medium text-slate-700">
           {data.used} of {data.limit} document{data.limit !== 1 ? 's' : ''} used this month
         </p>
         {data.plan === 'FREE' && (
-          <span className="text-xs font-medium text-[#1E4D8C] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+          <span className="text-xs font-semibold text-primary-900 bg-primary-900/8 px-2.5 py-1 rounded-full">
             Free plan
           </span>
         )}
@@ -48,9 +50,11 @@ function UsageWidget() {
         aria-label={`${pct}% of monthly document limit used`}
         className="h-2 bg-slate-100 rounded-full overflow-hidden mb-2"
       >
-        <div
-          className={`h-full rounded-full transition-all ${nearLimit ? 'bg-amber-500' : 'bg-[#1E4D8C]'}`}
-          style={{ width: `${pct}%` }}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className={`h-full rounded-full ${nearLimit ? 'bg-amber-500' : 'bg-primary-900'}`}
         />
       </div>
 
@@ -62,7 +66,7 @@ function UsageWidget() {
         </p>
         {data.plan === 'FREE' && (
           <button
-            className="text-xs font-medium text-[#1E4D8C] hover:underline"
+            className="text-xs font-medium text-primary-900 hover:underline"
             onClick={() => window.alert('Premium billing coming soon!')}
           >
             Upgrade to Premium →
@@ -77,29 +81,31 @@ function UsageWidget() {
 
 function DocumentCard({ doc }: { doc: LexDocument }) {
   return (
-    <Link to={`/documents/${doc.id}`} className="block group">
-      <Card className="hover:border-[#1E4D8C]/40 hover:shadow-md transition-all duration-150">
-        <CardContent>
-          <div className="flex items-start gap-3">
-            <div className="shrink-0 w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-[#1E4D8C]/10 group-hover:text-[#1E4D8C] transition-colors">
-              <FileText className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-slate-900 truncate group-hover:text-[#1E4D8C] transition-colors">
-                {doc.filename}
-              </p>
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <StatusBadge status={doc.status} />
-                <span className="flex items-center gap-1 text-xs text-slate-400">
-                  <Clock className="w-3 h-3" />
-                  {formatDistanceToNow(doc.createdAt)}
-                </span>
+    <motion.div variants={fadeUp}>
+      <Link to={`/documents/${doc.id}`} className="block group">
+        <Card interactive>
+          <CardContent>
+            <div className="flex items-start gap-3">
+              <div className="shrink-0 w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-primary-900/8 group-hover:text-primary-900 transition-colors duration-200">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-900 truncate group-hover:text-primary-900 transition-colors duration-200">
+                  {doc.filename}
+                </p>
+                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                  <StatusBadge status={doc.status} />
+                  <span className="flex items-center gap-1 text-xs text-slate-400">
+                    <Clock className="w-3 h-3" />
+                    {formatDistanceToNow(doc.createdAt)}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
+          </CardContent>
+        </Card>
+      </Link>
+    </motion.div>
   )
 }
 
@@ -122,7 +128,7 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
     <Card>
       <CardContent>
         <div className="flex flex-col items-center py-10 text-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
             <AlertCircle className="w-6 h-6 text-red-400" />
           </div>
           <p className="text-sm font-medium text-slate-900">Couldn't load your documents</p>
@@ -147,21 +153,26 @@ export default function DashboardPage() {
   return (
     <div className="max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex items-center justify-between mb-6 gap-4 flex-wrap"
+      >
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Your documents</h1>
+          <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">Your documents</h1>
           <p className="text-slate-500 text-sm mt-0.5">
             Upload a contract or legal document to get an instant plain-English summary.
           </p>
         </div>
         <Link
           to="/upload"
-          className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg text-sm font-medium bg-[#1E4D8C] text-white hover:bg-[#173d70] transition-colors"
+          className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
         >
           <Upload className="w-4 h-4" />
           Upload document
         </Link>
-      </div>
+      </motion.div>
 
       {/* Usage */}
       <UsageWidget />
@@ -174,13 +185,13 @@ export default function DashboardPage() {
       {!isLoading && !isError && docs.length === 0 && (
         <Card>
           <EmptyState
-            icon={<FileText className="w-6 h-6" />}
+            icon={<Sparkles className="w-6 h-6" />}
             title="No documents yet"
             description="Upload your first legal document and LexAI will explain it in plain language, highlight risks, and answer your questions."
             action={
               <Link
                 to="/upload"
-                className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg text-sm font-medium bg-[#1E4D8C] text-white hover:bg-[#173d70] transition-colors"
+                className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
               >
                 <Upload className="w-4 h-4" />
                 Upload your first document
@@ -191,11 +202,16 @@ export default function DashboardPage() {
       )}
 
       {!isLoading && !isError && docs.length > 0 && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
           {docs.map((doc) => (
             <DocumentCard key={doc.id} doc={doc} />
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   )
