@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Primary brand color — trustworthy navy blue */
+  /* ─── Brand: trustworthy navy ─── */
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
   --color-primary-200: #bfdbfe;
@@ -14,7 +14,12 @@
   --color-primary-900: #1E4D8C;
   --color-primary: #1E4D8C;
 
-  /* Risk severity semantic colors */
+  /* ─── Accent: soft sky used sparingly for gradients/glows ─── */
+  --color-accent-300: #a5d8ff;
+  --color-accent-400: #74c0fc;
+  --color-accent-500: #4dabf7;
+
+  /* ─── Risk severity semantic colors ─── */
   --color-risk-high: #dc2626;
   --color-risk-high-bg: #fef2f2;
   --color-risk-high-border: #fecaca;
@@ -27,9 +32,19 @@
   --color-risk-low-bg: #f0fdf4;
   --color-risk-low-border: #bbf7d0;
 
-  /* Base font */
+  /* ─── Typography ─── */
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Fraunces', 'Inter', ui-serif, Georgia, serif;
+
+  /* ─── Premium soft shadows ─── */
+  --shadow-soft-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 1px 0 rgb(15 23 42 / 0.03);
+  --shadow-soft: 0 4px 16px -4px rgb(15 23 42 / 0.08), 0 2px 6px -2px rgb(15 23 42 / 0.05);
+  --shadow-soft-lg: 0 12px 32px -8px rgb(15 23 42 / 0.12), 0 4px 12px -4px rgb(15 23 42 / 0.06);
+  --shadow-glow: 0 0 0 1px rgb(30 77 140 / 0.06), 0 8px 24px -4px rgb(30 77 140 / 0.18);
+
+  /* ─── Easing ─── */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
@@ -37,6 +52,7 @@
     font-family: theme(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -45,5 +61,60 @@
 
   #root {
     @apply min-h-screen;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: theme(--font-display);
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  ::selection {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-900);
+  }
+
+  /* Subtle, premium scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: theme(--color-slate-300);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: theme(--color-slate-400);
+    background-clip: content-box;
+  }
+}
+
+@layer utilities {
+  /* Soft radial glow used behind hero sections / empty states */
+  .bg-glow {
+    background-image: radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      rgb(30 77 140 / 0.12),
+      transparent 60%
+    );
+  }
+
+  /* Glassmorphism surface used sparingly on sticky headers */
+  .glass {
+    background-color: rgb(255 255 255 / 0.72);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+  }
+
+  .text-gradient-primary {
+    background-image: linear-gradient(135deg, var(--color-primary-900), var(--color-accent-500));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
   }
 }
