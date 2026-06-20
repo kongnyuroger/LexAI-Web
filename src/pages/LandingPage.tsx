@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { QRCodeSVG } from 'qrcode.react'
 import {
   Scale,
   Upload,
@@ -12,9 +13,12 @@ import {
   FileText,
   Zap,
   Lock,
+  Smartphone,
 } from 'lucide-react'
 import PublicFooter from '@/components/layout/PublicFooter'
+import WhatsAppIcon from '@/components/icons/WhatsAppIcon'
 import { fadeUp, staggerContainer, easePremium } from '@/lib/motion'
+import { WHATSAPP_LINK, WHATSAPP_DISPLAY_NUMBER } from '@/lib/whatsapp'
 
 // ── Nav ────────────────────────────────────────────────────────────────────────
 
@@ -295,6 +299,81 @@ function WhatWeCheck() {
   )
 }
 
+// ── WhatsApp bot ──────────────────────────────────────────────────────────────
+
+function WhatsAppSection() {
+  return (
+    <section className="py-20 md:py-28 px-4 bg-white" aria-labelledby="whatsapp-heading">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={staggerContainer}
+          >
+            <motion.div
+              variants={fadeUp}
+              className="inline-flex items-center gap-2 bg-[#25D366]/10 text-[#1a8a4a] text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full mb-5"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              No app required
+            </motion.div>
+            <motion.h2
+              variants={fadeUp}
+              id="whatsapp-heading"
+              className="font-display text-3xl md:text-4xl font-semibold text-slate-900 mb-4 tracking-tight"
+            >
+              Prefer WhatsApp? Chat with LexAI there too
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-slate-500 leading-relaxed mb-6">
+              Send your document straight to our WhatsApp number and get the same plain-language
+              summary, risk flags, and follow-up Q&A — no account, no download, just a chat.
+            </motion.p>
+
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl text-base font-semibold text-white bg-[#25D366] shadow-soft-lg hover:bg-[#1ebd5a] transition-all duration-200"
+              >
+                <WhatsAppIcon className="w-5 h-5" />
+                Chat on WhatsApp
+              </a>
+              <span className="text-sm text-slate-500 font-medium">{WHATSAPP_DISPLAY_NUMBER}</span>
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={fadeUp}
+            className="flex justify-center"
+          >
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-soft-lg p-6 flex flex-col items-center gap-4">
+              <div className="rounded-xl overflow-hidden p-2 bg-white">
+                <QRCodeSVG
+                  value={WHATSAPP_LINK}
+                  size={180}
+                  fgColor="#1a3327"
+                  bgColor="#ffffff"
+                  level="M"
+                />
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-semibold text-slate-900">Scan to start chatting</p>
+                <p className="text-xs text-slate-500 mt-0.5">Opens WhatsApp with a message ready to send</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ── Trust / disclaimer ────────────────────────────────────────────────────────
 
 function TrustSection() {
@@ -419,6 +498,7 @@ export default function LandingPage() {
         <Hero />
         <HowItWorks />
         <WhatWeCheck />
+        <WhatsAppSection />
         <TrustSection />
         <FinalCTA />
       </main>
