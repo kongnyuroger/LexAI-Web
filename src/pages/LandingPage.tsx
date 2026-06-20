@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import {
   Scale,
   Upload,
@@ -13,16 +14,19 @@ import {
   Lock,
 } from 'lucide-react'
 import PublicFooter from '@/components/layout/PublicFooter'
+import { fadeUp, staggerContainer, easePremium } from '@/lib/motion'
 
 // ── Nav ────────────────────────────────────────────────────────────────────────
 
 function LandingNav() {
   return (
-    <header className="h-16 bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-20">
+    <header className="h-16 glass border-b border-slate-200/70 sticky top-0 z-20">
       <div className="max-w-6xl mx-auto h-full flex items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-2">
-          <Scale className="w-6 h-6 text-[#1E4D8C]" />
-          <span className="font-bold text-[#1E4D8C] text-lg">LexAI</span>
+        <div className="flex items-center gap-2.5">
+          <span className="w-8 h-8 rounded-xl bg-primary-900 flex items-center justify-center shadow-soft">
+            <Scale className="w-4.5 h-4.5 text-white" />
+          </span>
+          <span className="font-semibold text-slate-900 text-lg tracking-tight">LexAI</span>
         </div>
 
         <nav aria-label="Site navigation" className="flex items-center gap-2">
@@ -34,7 +38,7 @@ function LandingNav() {
           </Link>
           <Link
             to="/register"
-            className="inline-flex items-center justify-center h-9 px-4 rounded-lg text-sm font-medium bg-[#1E4D8C] text-white hover:bg-[#173d70] transition-colors"
+            className="inline-flex items-center justify-center h-9 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
           >
             Get started free
           </Link>
@@ -48,53 +52,73 @@ function LandingNav() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-br from-[#1E4D8C]/5 via-white to-blue-50 py-20 md:py-32 px-4">
+    <section className="relative overflow-hidden bg-glow py-24 md:py-36 px-4">
+      {/* Dot-grid texture, fades out toward the bottom */}
       <div
         aria-hidden="true"
-        className="absolute top-0 right-0 w-96 h-96 bg-[#1E4D8C]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
+        className="absolute inset-0 bg-dot-grid opacity-40"
+        style={{ maskImage: 'linear-gradient(to bottom, black, transparent)' }}
       />
       <div
         aria-hidden="true"
-        className="absolute bottom-0 left-0 w-64 h-64 bg-blue-200/20 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4"
+        className="absolute top-0 right-0 w-96 h-96 bg-primary-900/8 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 w-64 h-64 bg-accent-400/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4"
       />
 
-      <div className="relative max-w-4xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 bg-[#1E4D8C]/10 text-[#1E4D8C] text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+        className="relative max-w-4xl mx-auto text-center"
+      >
+        <motion.div
+          variants={fadeUp}
+          className="inline-flex items-center gap-2 bg-primary-900/8 text-primary-900 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-7"
+        >
           <Zap className="w-3.5 h-3.5" />
           AI-powered legal document analysis
-        </div>
+        </motion.div>
 
-        <h1 className="text-4xl md:text-6xl font-bold text-slate-900 leading-tight mb-6">
+        <motion.h1
+          variants={fadeUp}
+          className="font-display text-4xl md:text-6xl lg:text-7xl font-semibold text-slate-900 leading-[1.08] mb-7 tracking-tight"
+        >
           Understand any contract{' '}
-          <span className="text-[#1E4D8C]">before you sign it</span>
+          <span className="text-gradient-primary">before you sign it</span>
           {' '}— in plain language, in minutes.
-        </h1>
+        </motion.h1>
 
-        <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <motion.p
+          variants={fadeUp}
+          className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed"
+        >
           Upload a legal document and LexAI will explain what it means, flag the risky clauses,
           and answer your questions in plain English. No legal jargon. No surprises.
-        </p>
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             to="/register"
-            className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl text-base font-semibold bg-[#1E4D8C] text-white hover:bg-[#173d70] transition-colors shadow-lg shadow-[#1E4D8C]/20"
+            className="group inline-flex items-center justify-center gap-2 h-13 px-7 rounded-xl text-base font-semibold bg-primary-900 text-white shadow-soft-lg hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
           >
             Analyse my document free
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
           <Link
             to="/login"
-            className="inline-flex items-center justify-center h-12 px-6 rounded-xl text-base font-medium border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 transition-colors"
+            className="inline-flex items-center justify-center h-13 px-7 rounded-xl text-base font-medium border border-slate-200 text-slate-700 bg-white shadow-soft-sm hover:bg-slate-50 hover:border-slate-300 transition-all duration-200"
           >
             Sign in
           </Link>
-        </div>
+        </motion.div>
 
-        <p className="text-xs text-slate-400 mt-4">
+        <motion.p variants={fadeUp} className="text-xs text-slate-400 mt-5">
           Free to start · No credit card required · 3 documents per month
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
     </section>
   )
 }
@@ -134,38 +158,60 @@ const HOW_IT_WORKS = [
 
 function HowItWorks() {
   return (
-    <section className="py-20 px-4 bg-white" aria-labelledby="how-it-works-heading">
+    <section className="py-20 md:py-28 px-4 bg-white" aria-labelledby="how-it-works-heading">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-14">
-          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={staggerContainer}
+          className="text-center mb-16"
+        >
+          <motion.h2
+            variants={fadeUp}
+            id="how-it-works-heading"
+            className="font-display text-3xl md:text-4xl font-semibold text-slate-900 mb-3 tracking-tight"
+          >
             How it works
-          </h2>
-          <p className="text-slate-500 text-lg max-w-xl mx-auto">
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-slate-500 text-lg max-w-xl mx-auto">
             From upload to insight in under a minute.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={staggerContainer}
+          className="relative grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10"
+        >
+          {/* Connecting line behind icons, desktop only */}
+          <div
+            aria-hidden="true"
+            className="hidden lg:block absolute top-6 left-[12.5%] right-[12.5%] border-t border-dashed border-slate-200"
+          />
+
           {HOW_IT_WORKS.map(({ icon: Icon, step, title, description }) => (
-            <div key={step} className="flex flex-col items-start gap-4">
-              <div className="relative">
-                <div className="w-12 h-12 rounded-2xl bg-[#1E4D8C]/10 flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-[#1E4D8C]" aria-hidden="true" />
+            <motion.div key={step} variants={fadeUp} className="relative flex flex-col items-start gap-4">
+              <div className="relative bg-white">
+                <div className="w-12 h-12 rounded-2xl bg-primary-900/8 flex items-center justify-center ring-4 ring-white">
+                  <Icon className="w-6 h-6 text-primary-900" aria-hidden="true" />
                 </div>
                 <span
                   aria-hidden="true"
-                  className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#1E4D8C] text-white text-xs font-bold flex items-center justify-center"
+                  className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-primary-900 text-white text-xs font-bold flex items-center justify-center"
                 >
                   {step}
                 </span>
               </div>
               <div>
-                <h3 className="text-base font-semibold text-slate-900 mb-1">{title}</h3>
+                <h3 className="text-base font-semibold text-slate-900 mb-1 tracking-tight">{title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
@@ -186,42 +232,63 @@ const RISK_ITEMS = [
 
 function WhatWeCheck() {
   return (
-    <section className="py-20 px-4 bg-slate-50" aria-labelledby="risk-detection-heading">
+    <section className="py-20 md:py-28 px-4 bg-slate-50" aria-labelledby="risk-detection-heading">
       <div className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-5 border border-red-200">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={staggerContainer}
+          >
+            <motion.div
+              variants={fadeUp}
+              className="inline-flex items-center gap-2 bg-red-50 text-red-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-5 border border-red-200"
+            >
               <ShieldAlert className="w-3.5 h-3.5" />
               Risk detection
-            </div>
-            <h2 id="risk-detection-heading" className="text-3xl font-bold text-slate-900 mb-4">
+            </motion.div>
+            <motion.h2
+              variants={fadeUp}
+              id="risk-detection-heading"
+              className="font-display text-3xl font-semibold text-slate-900 mb-4 tracking-tight"
+            >
               What LexAI checks for
-            </h2>
-            <p className="text-slate-500 leading-relaxed mb-6">
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-slate-500 leading-relaxed mb-6">
               Most people sign contracts without reading the fine print. LexAI is trained to spot
               the clauses that matter most — the ones that are often buried in legal language
               deliberately designed to be overlooked.
-            </p>
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[#1E4D8C] hover:underline"
-            >
-              Try it on your document
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+            </motion.p>
+            <motion.div variants={fadeUp}>
+              <Link
+                to="/register"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-primary-900 hover:underline"
+              >
+                Try it on your document
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </motion.div>
+          </motion.div>
 
-          <ul className="space-y-3" aria-label="Types of risk LexAI detects">
+          <motion.ul
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={staggerContainer}
+            className="space-y-3"
+            aria-label="Types of risk LexAI detects"
+          >
             {RISK_ITEMS.map((item) => (
-              <li key={item} className="flex items-start gap-3">
+              <motion.li key={item} variants={fadeUp} className="flex items-start gap-3 bg-white rounded-xl p-3 shadow-soft-sm border border-slate-100">
                 <CheckCircle
-                  className="w-5 h-5 text-[#1E4D8C] shrink-0 mt-0.5"
+                  className="w-5 h-5 text-primary-900 shrink-0 mt-0.5"
                   aria-hidden="true"
                 />
                 <span className="text-sm text-slate-700">{item}</span>
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
         </div>
       </div>
     </section>
@@ -233,26 +300,39 @@ function WhatWeCheck() {
 function TrustSection() {
   return (
     <section
-      className="py-16 px-4 bg-white border-t border-slate-100"
+      className="py-20 px-4 bg-white border-t border-slate-100"
       aria-labelledby="trust-heading"
     >
-      <div className="max-w-3xl mx-auto text-center">
-        <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center mx-auto mb-5">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-80px' }}
+        variants={staggerContainer}
+        className="max-w-3xl mx-auto text-center"
+      >
+        <motion.div
+          variants={fadeUp}
+          className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center mx-auto mb-5"
+        >
           <ShieldCheck className="w-7 h-7 text-amber-600" aria-hidden="true" />
-        </div>
+        </motion.div>
 
-        <h2 id="trust-heading" className="text-2xl font-bold text-slate-900 mb-3">
+        <motion.h2
+          variants={fadeUp}
+          id="trust-heading"
+          className="font-display text-2xl md:text-3xl font-semibold text-slate-900 mb-3 tracking-tight"
+        >
           General information, not legal advice
-        </h2>
+        </motion.h2>
 
-        <p className="text-slate-500 leading-relaxed mb-8">
+        <motion.p variants={fadeUp} className="text-slate-500 leading-relaxed mb-8">
           LexAI helps you understand what a document says — in language you can actually follow.
           It is not a law firm and does not provide legal advice. For matters with significant
           financial, employment, or legal consequences, we recommend consulting a qualified
           solicitor or lawyer who can advise on your specific situation.
-        </p>
+        </motion.p>
 
-        <div className="grid sm:grid-cols-3 gap-4 text-left">
+        <motion.div variants={fadeUp} className="grid sm:grid-cols-3 gap-4 text-left">
           {[
             {
               icon: FileText,
@@ -270,14 +350,19 @@ function TrustSection() {
               body: 'Legal documents should not be intimidating. LexAI translates complexity into clarity.',
             },
           ].map(({ icon: Icon, title, body }) => (
-            <div key={title} className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-              <Icon className="w-5 h-5 text-[#1E4D8C] mb-2" aria-hidden="true" />
-              <p className="text-sm font-semibold text-slate-900 mb-1">{title}</p>
+            <div
+              key={title}
+              className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-soft transition-all duration-300 hover:shadow-soft-lg hover:-translate-y-0.5"
+            >
+              <div className="w-9 h-9 rounded-xl bg-primary-900/8 flex items-center justify-center mb-3">
+                <Icon className="w-4.5 h-4.5 text-primary-900" aria-hidden="true" />
+              </div>
+              <p className="text-sm font-semibold text-slate-900 mb-1 tracking-tight">{title}</p>
               <p className="text-xs text-slate-500 leading-relaxed">{body}</p>
             </div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }
@@ -286,9 +371,19 @@ function TrustSection() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 px-4 bg-[#1E4D8C]" aria-labelledby="cta-heading">
-      <div className="max-w-2xl mx-auto text-center">
-        <h2 id="cta-heading" className="text-3xl md:text-4xl font-bold text-white mb-4">
+    <section className="relative overflow-hidden py-20 md:py-28 px-4 bg-primary-900" aria-labelledby="cta-heading">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_0%,rgba(255,255,255,0.12),transparent)]"
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.5, ease: easePremium }}
+        className="relative max-w-2xl mx-auto text-center"
+      >
+        <h2 id="cta-heading" className="font-display text-3xl md:text-4xl font-semibold text-white mb-4 tracking-tight">
           Ready to understand your contract?
         </h2>
         <p className="text-blue-200 text-lg mb-8">
@@ -297,19 +392,19 @@ function FinalCTA() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             to="/register"
-            className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl text-base font-semibold bg-white text-[#1E4D8C] hover:bg-blue-50 transition-colors"
+            className="group inline-flex items-center justify-center gap-2 h-13 px-7 rounded-xl text-base font-semibold bg-white text-primary-900 shadow-soft-lg hover:bg-blue-50 transition-all duration-200"
           >
             Get started free
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
           <Link
             to="/login"
-            className="inline-flex items-center justify-center h-12 px-6 rounded-xl text-base font-medium border border-white/30 text-white hover:bg-white/10 transition-colors"
+            className="inline-flex items-center justify-center h-13 px-7 rounded-xl text-base font-medium border border-white/25 text-white hover:bg-white/10 transition-colors"
           >
             Sign in
           </Link>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

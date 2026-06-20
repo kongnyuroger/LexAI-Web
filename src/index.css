@@ -137,4 +137,10 @@
     0% { background-position: 150% 0; }
     100% { background-position: -50% 0; }
   }
+
+  /* Subtle dot-grid texture for premium hero/marketing backgrounds */
+  .bg-dot-grid {
+    background-image: radial-gradient(circle, theme(--color-slate-300) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
 }
