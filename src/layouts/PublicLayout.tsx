@@ -2,9 +2,10 @@ import { Outlet, useLocation } from 'react-router-dom'
 import PublicHeader from '@/components/layout/PublicHeader'
 import PublicFooter from '@/components/layout/PublicFooter'
 
-// Don't show the public header/footer on the landing page itself
-// (it has its own hero-style header)
-const BARE_ROUTES = ['/']
+// Landing page has its own hero-style header; auth pages are self-contained
+// full-screen cards with their own logo lockup — showing PublicHeader/Footer
+// on top of them duplicates the branding and the "Sign in" CTA.
+const BARE_ROUTES = ['/', '/login', '/register']
 
 export default function PublicLayout() {
   const { pathname } = useLocation()
