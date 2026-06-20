@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
 import { Scale } from 'lucide-react'
+
 export default function PublicHeader() {
   return (
-    <header className="h-16 bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-20">
+    <header className="h-16 glass border-b border-slate-200/70 sticky top-0 z-20">
       <div className="max-w-6xl mx-auto h-full flex items-center justify-between px-4 md:px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <Scale className="w-6 h-6 text-[#1E4D8C]" />
-          <span className="font-bold text-[#1E4D8C] text-lg">LexAI</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <span className="w-8 h-8 rounded-xl bg-primary-900 flex items-center justify-center shadow-soft">
+            <Scale className="w-4.5 h-4.5 text-white" />
+          </span>
+          <span className="font-semibold text-slate-900 text-lg tracking-tight">LexAI</span>
         </Link>
 
         <nav aria-label="Public navigation" className="flex items-center gap-3">
@@ -18,7 +21,7 @@ export default function PublicHeader() {
           </Link>
           <Link
             to="/register"
-            className="inline-flex items-center justify-center h-8 px-3 rounded-lg text-sm font-medium bg-[#1E4D8C] text-white hover:bg-[#173d70] transition-colors"
+            className="inline-flex items-center justify-center h-9 px-4 rounded-xl text-sm font-medium bg-primary-900 text-white shadow-soft hover:bg-[#173d70] hover:shadow-glow transition-all duration-200"
           >
             Get started free
           </Link>
