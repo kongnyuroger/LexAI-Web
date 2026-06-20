@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
 import {
   FileText,
   RefreshCw,
@@ -31,6 +32,7 @@ import { useToast } from '@/contexts/ToastContext'
 import { formatDate } from '@/lib/dateUtils'
 import type { DocumentAnalysis, RiskFlag, RiskSeverity } from '@/types'
 import { cn } from '@/lib/utils'
+import { fadeUp, staggerContainer } from '@/lib/motion'
 
 // ── Summary card ─────────────────────────────────────────────────────────────
 
@@ -44,36 +46,40 @@ function SummarySection({ summary }: { summary: DocumentAnalysis['summary'] }) {
   ]
 
   return (
-    <Card className="mb-6">
-      <CardHeader>
-        <CardTitle>Document summary</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid sm:grid-cols-2 gap-5">
-          {sections.map(({ icon: Icon, label, items }) => {
-            if (!items || items.length === 0) return null
-            return (
-              <div key={label}>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Icon className="w-4 h-4 text-slate-400" />
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                    {label}
-                  </p>
+    <motion.div variants={fadeUp}>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Document summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid sm:grid-cols-2 gap-6">
+            {sections.map(({ icon: Icon, label, items }) => {
+              if (!items || items.length === 0) return null
+              return (
+                <div key={label}>
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <div className="w-6 h-6 rounded-lg bg-primary-900/8 flex items-center justify-center">
+                      <Icon className="w-3.5 h-3.5 text-primary-900" />
+                    </div>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                      {label}
+                    </p>
+                  </div>
+                  <ul className="space-y-1">
+                    {items.map((item, i) => (
+                      <li key={i} className="text-sm text-slate-700 leading-relaxed">
+                        {items.length > 1 && <span className="text-slate-400 mr-1">·</span>}
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-1">
-                  {items.map((item, i) => (
-                    <li key={i} className="text-sm text-slate-700">
-                      {items.length > 1 && <span className="text-slate-400 mr-1">·</span>}
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
-        </div>
-      </CardContent>
-    </Card>
+              )
+            })}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   )
 }
 
@@ -87,9 +93,11 @@ const riskBorderColors: Record<RiskSeverity, string> = {
 
 function RiskFlagCard({ flag }: { flag: RiskFlag }) {
   return (
-    <div
+    <motion.div
+      variants={fadeUp}
       className={cn(
-        'rounded-xl border border-slate-200 bg-white p-4 border-l-4',
+        'rounded-2xl border border-slate-200/80 bg-white p-4 border-l-4 shadow-soft-sm',
+        'transition-shadow duration-200 hover:shadow-soft',
         riskBorderColors[flag.severity]
       )}
     >
@@ -107,7 +115,7 @@ function RiskFlagCard({ flag }: { flag: RiskFlag }) {
 
       {/* Plain-language explanation */}
       <p className="text-sm text-slate-700 leading-relaxed">{flag.explanation}</p>
-    </div>
+    </motion.div>
   )
 }
 
@@ -126,36 +134,43 @@ function RiskFlagsSection({ flags }: { flags: RiskFlag[] }) {
   )
 
   return (
-    <Card className="mb-6">
-      <CardHeader>
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <CardTitle>Risk flags</CardTitle>
-          <div className="flex gap-2">
-            {(['HIGH', 'MEDIUM', 'LOW'] as RiskSeverity[]).map((s) =>
-              counts[s] ? (
-                <span key={s} className="flex items-center gap-1">
-                  <RiskBadge severity={s} />
-                  <span className="text-xs text-slate-500">×{counts[s]}</span>
-                </span>
-              ) : null
-            )}
+    <motion.div variants={fadeUp}>
+      <Card className="mb-6">
+        <CardHeader>
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <CardTitle>Risk flags</CardTitle>
+            <div className="flex gap-2">
+              {(['HIGH', 'MEDIUM', 'LOW'] as RiskSeverity[]).map((s) =>
+                counts[s] ? (
+                  <span key={s} className="flex items-center gap-1">
+                    <RiskBadge severity={s} />
+                    <span className="text-xs text-slate-500">×{counts[s]}</span>
+                  </span>
+                ) : null
+              )}
+            </div>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        {sorted.length === 0 ? (
-          <p className="text-sm text-slate-500 py-4 text-center">
-            No risk flags were identified in this document.
-          </p>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {sorted.map((flag) => (
-              <RiskFlagCard key={flag.id} flag={flag} />
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardHeader>
+        <CardContent>
+          {sorted.length === 0 ? (
+            <p className="text-sm text-slate-500 py-4 text-center">
+              No risk flags were identified in this document.
+            </p>
+          ) : (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="flex flex-col gap-3"
+            >
+              {sorted.map((flag) => (
+                <RiskFlagCard key={flag.id} flag={flag} />
+              ))}
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   )
 }
 
@@ -188,14 +203,21 @@ function AnalyzePrompt({
     <Card className="mb-6">
       <CardContent>
         <div className="flex flex-col items-center py-10 text-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#1E4D8C]/10 flex items-center justify-center">
-            <FileText className="w-7 h-7 text-[#1E4D8C]" />
+          <div className="relative w-14 h-14 rounded-2xl bg-primary-900/8 flex items-center justify-center">
+            {isPending && (
+              <motion.div
+                className="absolute inset-0 rounded-2xl bg-primary-900/10"
+                animate={{ scale: [1, 1.3, 1], opacity: [0.6, 0, 0.6] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            )}
+            <FileText className="relative w-7 h-7 text-primary-900" />
           </div>
           {isPending ? (
             <>
-              <Spinner size="md" className="text-[#1E4D8C]" />
+              <Spinner size="md" className="text-primary-900" />
               <div>
-                <p className="text-base font-semibold text-slate-900">
+                <p className="text-base font-semibold text-slate-900 tracking-tight">
                   Reading through your document…
                 </p>
                 <p className="text-sm text-slate-500 mt-1">
@@ -206,7 +228,7 @@ function AnalyzePrompt({
           ) : (
             <>
               <div>
-                <p className="text-base font-semibold text-slate-900">Ready to analyse</p>
+                <p className="text-base font-semibold text-slate-900 tracking-tight">Ready to analyse</p>
                 <p className="text-sm text-slate-500 mt-1 max-w-xs">
                   LexAI will produce a plain-English summary and highlight any clauses worth
                   knowing about.
@@ -253,11 +275,11 @@ function FailedState({ documentId }: { documentId: string }) {
     <Card className="mb-6">
       <CardContent>
         <div className="flex flex-col items-center py-10 text-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
             <AlertCircle className="w-6 h-6 text-red-400" />
           </div>
           <div>
-            <p className="text-base font-semibold text-slate-900">Analysis failed</p>
+            <p className="text-base font-semibold text-slate-900 tracking-tight">Analysis failed</p>
             <p className="text-sm text-slate-500 mt-1">
               Something went wrong while reading your document. This is usually temporary.
             </p>
@@ -311,7 +333,7 @@ export default function DocumentDetailPage() {
       <div className="flex flex-col items-center gap-4 py-16 text-center">
         <AlertCircle className="w-10 h-10 text-red-400" />
         <p className="text-slate-700 font-medium">Document not found</p>
-        <Link to="/dashboard" className="text-sm text-[#1E4D8C] hover:underline">
+        <Link to="/dashboard" className="text-sm text-primary-900 hover:underline">
           Back to dashboard
         </Link>
       </div>
@@ -330,12 +352,17 @@ export default function DocumentDetailPage() {
       </Link>
 
       {/* Document header */}
-      <div className="flex items-start gap-3 mb-6">
-        <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex items-start gap-3 mb-6"
+      >
+        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
           <FileText className="w-5 h-5 text-slate-400" />
         </div>
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-bold text-slate-900 truncate">{doc.filename}</h1>
+          <h1 className="text-xl font-semibold text-slate-900 truncate tracking-tight">{doc.filename}</h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
             <StatusBadge status={doc.status} />
             <span className="text-xs text-slate-400">Uploaded {formatDate(doc.createdAt)}</span>
@@ -345,12 +372,12 @@ export default function DocumentDetailPage() {
         {/* Chat link — always visible once document exists */}
         <Link
           to={`/documents/${id}/chat`}
-          className="inline-flex items-center justify-center gap-2 h-9 px-3 rounded-lg text-sm font-medium border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors shrink-0"
+          className="inline-flex items-center justify-center gap-2 h-9 px-3 rounded-xl text-sm font-medium border border-slate-200 text-slate-700 bg-white shadow-soft-sm hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 shrink-0"
         >
           <MessageSquare className="w-4 h-4" />
           <span className="hidden sm:inline">Ask questions</span>
         </Link>
-      </div>
+      </motion.div>
 
       {/* Failed */}
       {doc.status === 'FAILED' && <FailedState documentId={id!} />}
@@ -365,10 +392,10 @@ export default function DocumentDetailPage() {
 
       {/* Analysis result */}
       {analysis && (
-        <>
+        <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
           <SummarySection summary={analysis.summary} />
           <RiskFlagsSection flags={analysis.riskFlags} />
-        </>
+        </motion.div>
       )}
     </div>
   )
