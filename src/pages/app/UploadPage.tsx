@@ -1,11 +1,13 @@
 import { useState, useRef, useCallback, type DragEvent, type ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Upload, FileText, X, ShieldCheck, AlertCircle } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { useToast } from '@/contexts/ToastContext'
 import { uploadDocument } from '@/lib/uploadApi'
 import { cn } from '@/lib/utils'
+import { easePremium } from '@/lib/motion'
 
 // ── Validation ──────────────────────────────────────────────────────────────
 
@@ -63,7 +65,7 @@ function DropZone({ onFile, disabled }: DropZoneProps) {
   }
 
   return (
-    <div
+    <motion.div
       role="button"
       tabIndex={disabled ? -1 : 0}
       aria-label="Drop zone: drag and drop a file here, or click to browse"
@@ -74,22 +76,24 @@ function DropZone({ onFile, disabled }: DropZoneProps) {
       onKeyDown={(e) => {
         if ((e.key === 'Enter' || e.key === ' ') && !disabled) inputRef.current?.click()
       }}
+      animate={{ scale: isDragging ? 1.015 : 1 }}
+      transition={{ duration: 0.15, ease: easePremium }}
       className={cn(
         'relative flex flex-col items-center justify-center gap-4',
         'border-2 border-dashed rounded-2xl p-12 text-center',
-        'transition-colors duration-150 cursor-pointer',
+        'transition-colors duration-200 cursor-pointer',
         isDragging
-          ? 'border-[#1E4D8C] bg-blue-50'
-          : 'border-slate-300 bg-slate-50 hover:border-[#1E4D8C]/50 hover:bg-blue-50/30',
+          ? 'border-primary-900 bg-primary-900/5'
+          : 'border-slate-300 bg-slate-50 hover:border-primary-900/40 hover:bg-primary-900/3',
         disabled && 'pointer-events-none opacity-60'
       )}
     >
-      <div className="w-14 h-14 rounded-2xl bg-[#1E4D8C]/10 flex items-center justify-center">
-        <Upload className="w-7 h-7 text-[#1E4D8C]" />
+      <div className="w-14 h-14 rounded-2xl bg-primary-900/8 flex items-center justify-center">
+        <Upload className="w-7 h-7 text-primary-900" />
       </div>
 
       <div>
-        <p className="text-base font-semibold text-slate-900">
+        <p className="text-base font-semibold text-slate-900 tracking-tight">
           {isDragging ? 'Drop your file here' : 'Drag & drop your document here'}
         </p>
         <p className="text-sm text-slate-500 mt-1">or click to browse your files</p>
@@ -108,7 +112,7 @@ function DropZone({ onFile, disabled }: DropZoneProps) {
         tabIndex={-1}
         aria-hidden="true"
       />
-    </div>
+    </motion.div>
   )
 }
 
@@ -131,10 +135,10 @@ function FilePreview({
     <div
       className={cn(
         'flex items-start gap-3 rounded-xl border p-4',
-        error ? 'border-red-200 bg-red-50' : 'border-slate-200 bg-white'
+        error ? 'border-red-200 bg-red-50' : 'border-slate-200 bg-white shadow-soft-sm'
       )}
     >
-      <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
         {error ? (
           <AlertCircle className="w-5 h-5 text-red-400" />
         ) : (
@@ -155,9 +159,11 @@ function FilePreview({
         {progress !== null && !error && (
           <div className="mt-2">
             <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#1E4D8C] rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.2, ease: easePremium }}
+                className="h-full bg-primary-900 rounded-full"
                 role="progressbar"
                 aria-valuenow={progress}
                 aria-valuemin={0}
@@ -234,25 +240,48 @@ export default function UploadPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Upload a document</h1>
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mb-6"
+      >
+        <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">Upload a document</h1>
         <p className="text-slate-500 text-sm mt-1">
           LexAI will read your document and produce a plain-English summary with risk flags.
         </p>
-      </div>
+      </motion.div>
 
-      <Card>
+      <Card className="shadow-soft-lg">
         <div className="flex flex-col gap-4">
-          {!selectedFile ? (
-            <DropZone onFile={handleFile} />
-          ) : (
-            <FilePreview
-              file={selectedFile}
-              error={validationError}
-              progress={progress}
-              onRemove={handleRemove}
-            />
-          )}
+          <AnimatePresence mode="wait">
+            {!selectedFile ? (
+              <motion.div
+                key="dropzone"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <DropZone onFile={handleFile} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="preview"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: easePremium }}
+              >
+                <FilePreview
+                  file={selectedFile}
+                  error={validationError}
+                  progress={progress}
+                  onRemove={handleRemove}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {selectedFile && !isUploading && (
             <div className="flex gap-3">
@@ -275,9 +304,9 @@ export default function UploadPage() {
           )}
 
           {/* Trust message */}
-          <div className="flex items-start gap-2 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2.5">
-            <ShieldCheck className="w-4 h-4 text-[#1E4D8C] mt-0.5 shrink-0" />
-            <p className="text-xs text-slate-600">
+          <div className="flex items-start gap-2.5 rounded-xl bg-slate-50 border border-slate-200/80 px-3.5 py-3">
+            <ShieldCheck className="w-4 h-4 text-primary-900 mt-0.5 shrink-0" />
+            <p className="text-xs text-slate-600 leading-relaxed">
               Your document is analyzed securely and is never shared with anyone. Only you can see
               your documents and analysis results.
             </p>
