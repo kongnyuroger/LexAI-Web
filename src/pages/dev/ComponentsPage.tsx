@@ -38,7 +38,7 @@ export default function ComponentsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Component Library</h1>
+        <h1 className="font-display text-3xl font-semibold text-slate-900 mb-2 tracking-tight">Component Library</h1>
         <p className="text-slate-500">
           Visual reference for all shared UI components. This page is only visible in development.
         </p>
@@ -99,6 +99,10 @@ export default function ComponentsPage() {
             <p className="text-sm text-slate-700 font-medium mb-1">Large padding variant</p>
             <p className="text-sm text-slate-500">Extra breathing room for prominent content.</p>
           </Card>
+          <Card interactive>
+            <p className="text-sm text-slate-700 font-medium mb-1">Interactive variant</p>
+            <p className="text-sm text-slate-500">Hover to see the lift + shadow transition.</p>
+          </Card>
         </div>
       </Section>
 
@@ -131,8 +135,8 @@ export default function ComponentsPage() {
       <Section title="Spinner">
         <div className="flex items-center gap-6">
           <Spinner size="sm" />
-          <Spinner size="md" className="text-[#1E4D8C]" />
-          <Spinner size="lg" className="text-[#1E4D8C]" />
+          <Spinner size="md" className="text-primary-900" />
+          <Spinner size="lg" className="text-primary-900" />
         </div>
       </Section>
 
