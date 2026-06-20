@@ -8,8 +8,10 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { easePremium } from '@/lib/motion'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -66,12 +68,16 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
   const { icon: Icon, containerClass, iconClass } = toastConfig[toast.type]
 
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, x: 24, scale: 0.95 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      exit={{ opacity: 0, x: 24, scale: 0.95, transition: { duration: 0.15 } }}
+      transition={{ duration: 0.3, ease: easePremium }}
       role="alert"
       aria-live="assertive"
       className={cn(
-        'flex items-start gap-3 w-80 rounded-xl border shadow-lg p-4',
-        'animate-in slide-in-from-right-4 fade-in duration-200',
+        'flex items-start gap-3 w-80 rounded-2xl border shadow-soft-lg p-4',
         containerClass
       )}
     >
@@ -87,7 +93,7 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
       >
         <X className="w-4 h-4" />
       </button>
-    </div>
+    </motion.div>
   )
 }
 
@@ -140,11 +146,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           aria-label="Notifications"
           className="fixed bottom-5 right-5 z-100 flex flex-col gap-3 pointer-events-none"
         >
-          {toasts.map((toast) => (
-            <div key={toast.id} className="pointer-events-auto">
-              <ToastItem toast={toast} onRemove={removeToast} />
-            </div>
-          ))}
+          <AnimatePresence>
+            {toasts.map((toast) => (
+              <div key={toast.id} className="pointer-events-auto">
+                <ToastItem toast={toast} onRemove={removeToast} />
+              </div>
+            ))}
+          </AnimatePresence>
         </div>,
         document.body
       )}

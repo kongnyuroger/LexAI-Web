@@ -63,8 +63,11 @@
     @apply min-h-screen;
   }
 
+  /* Sans is the default for all headings (UI chrome). The display serif
+     (Fraunces) is applied selectively via the `font-display` utility on
+     marketing/hero headlines only — not globally, to avoid serif bleeding
+     into card titles, modal titles, etc. */
   h1, h2, h3, h4 {
-    font-family: theme(--font-display);
     letter-spacing: -0.015em;
     font-weight: 600;
   }
@@ -116,5 +119,22 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+  }
+
+  /* Premium shimmer for skeleton loaders — moving highlight instead of plain pulse */
+  .skeleton-shimmer {
+    background: linear-gradient(
+      100deg,
+      theme(--color-slate-200) 30%,
+      theme(--color-slate-100) 50%,
+      theme(--color-slate-200) 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 150% 0; }
+    100% { background-position: -50% 0; }
   }
 }

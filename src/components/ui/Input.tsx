@@ -35,14 +35,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
             aria-invalid={error ? true : undefined}
             className={cn(
-              'w-full rounded-lg border bg-white text-slate-900 text-sm placeholder:text-slate-400',
-              'px-3 py-2 h-10',
-              'transition-colors duration-150',
-              'focus:outline-none focus:ring-2 focus:ring-[#1E4D8C] focus:ring-offset-0 focus:border-[#1E4D8C]',
-              'disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed',
+              'w-full rounded-xl border bg-white text-slate-900 text-sm placeholder:text-slate-400',
+              'px-3.5 py-2 h-11 shadow-soft-sm',
+              'transition-[border-color,box-shadow] duration-200',
+              'focus:outline-none focus:ring-2 focus:ring-primary-900/30 focus:ring-offset-0 focus:border-primary-900',
+              'disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed disabled:shadow-none',
               error
-                ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
-                : 'border-slate-300',
+                ? 'border-red-400 focus:ring-red-400/30 focus:border-red-400'
+                : 'border-slate-200 hover:border-slate-300',
               leadingIcon && 'pl-9',
               trailingIcon && 'pr-9',
               className

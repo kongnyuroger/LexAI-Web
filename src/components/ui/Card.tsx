@@ -3,20 +3,24 @@ import { cn } from '@/lib/utils'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   padding?: 'none' | 'sm' | 'md' | 'lg'
+  /** Adds hover lift + shadow transition — use for clickable/interactive cards */
+  interactive?: boolean
 }
 
 const paddingClasses = {
   none: '',
   sm: 'p-4',
   md: 'p-5',
-  lg: 'p-6',
+  lg: 'p-7',
 }
 
-export function Card({ padding = 'md', className, children, ...props }: CardProps) {
+export function Card({ padding = 'md', interactive = false, className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'bg-white rounded-xl border border-slate-200 shadow-sm',
+        'bg-white rounded-2xl border border-slate-200/80 shadow-soft',
+        interactive &&
+          'transition-[box-shadow,transform,border-color] duration-300 ease-out hover:shadow-soft-lg hover:-translate-y-0.5 hover:border-slate-300/80 cursor-pointer',
         paddingClasses[padding],
         className
       )}
@@ -37,7 +41,7 @@ export function CardHeader({ className, children, ...props }: HTMLAttributes<HTM
 
 export function CardTitle({ className, children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h2 className={cn('text-base font-semibold text-slate-900', className)} {...props}>
+    <h2 className={cn('text-base font-semibold text-slate-900 tracking-tight', className)} {...props}>
       {children}
     </h2>
   )
