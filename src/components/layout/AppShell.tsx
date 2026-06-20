@@ -9,6 +9,7 @@ import {
   Menu,
   X,
   ChevronDown,
+  Home,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { easePremium } from '@/lib/motion'
@@ -23,6 +24,10 @@ const navItems: NavItem[] = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
   { label: 'Profile & plan', to: '/profile', icon: User },
 ]
+
+// Rendered separately, below a divider — leaves the app shell entirely to
+// return to the public marketing site, unlike the in-app destinations above.
+const homeItem: NavItem = { label: 'Back to homepage', to: '/', icon: Home }
 
 interface AppShellProps {
   children: React.ReactNode
@@ -120,6 +125,10 @@ export default function AppShell({ children, userName, onLogout }: AppShellProps
           className="hidden md:flex flex-col w-56 bg-white border-r border-slate-200/70 p-3 gap-1 shrink-0"
         >
           <SidebarNav items={navItems} />
+          <div className="flex-1" />
+          <div className="pt-1 border-t border-slate-100">
+            <SidebarNav items={[homeItem]} />
+          </div>
         </nav>
 
         {/* ── Mobile sidebar overlay ── */}
@@ -158,6 +167,10 @@ export default function AppShell({ children, userName, onLogout }: AppShellProps
                   </button>
                 </div>
                 <SidebarNav items={navItems} onNav={() => setSidebarOpen(false)} />
+                <div className="flex-1" />
+                <div className="pt-1 border-t border-slate-100">
+                  <SidebarNav items={[homeItem]} onNav={() => setSidebarOpen(false)} />
+                </div>
               </motion.nav>
             </>
           )}
@@ -183,6 +196,7 @@ function SidebarNav({
         <NavLink
           key={to}
           to={to}
+          end
           onClick={onNav}
           className={({ isActive }) =>
             cn(
