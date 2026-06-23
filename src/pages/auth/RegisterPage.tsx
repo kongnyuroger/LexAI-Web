@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion } from 'framer-motion'
 import { Scale } from 'lucide-react'
-import { Button, Input, Card } from '@/components/ui'
+import { Button, Input, Card, GoogleSignInButton } from '@/components/ui'
 import { useToast } from '@/contexts/ToastContext'
 import { register as registerUser, login } from '@/lib/authApi'
 import { useAuthStore } from '@/stores/authStore'
@@ -86,6 +86,14 @@ export default function RegisterPage() {
 
         <motion.div variants={fadeUp}>
           <Card className="shadow-soft-lg">
+            <GoogleSignInButton />
+
+            <div className="flex items-center gap-3 my-5">
+              <div className="h-px flex-1 bg-slate-200" />
+              <span className="text-xs font-medium text-slate-400 uppercase tracking-wide">or</span>
+              <div className="h-px flex-1 bg-slate-200" />
+            </div>
+
             <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
               <Input
                 label="Full name"
