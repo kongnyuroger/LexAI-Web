@@ -1,11 +1,15 @@
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
+export type AuthProvider = 'EMAIL' | 'GOOGLE'
+
 export interface User {
   id: string
   email: string
   fullName: string
   plan: 'FREE' | 'PREMIUM'
   createdAt: string
+  avatarUrl?: string | null
+  authProvider?: AuthProvider
 }
 
 export interface AuthTokens {

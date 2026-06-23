@@ -16,7 +16,7 @@ export default function AppLayout() {
 
   return (
     <ProtectedRoute>
-      <AppShell userName={user?.fullName} onLogout={handleLogout}>
+      <AppShell userName={user?.fullName} avatarUrl={user?.avatarUrl} onLogout={handleLogout}>
         <Outlet />
       </AppShell>
     </ProtectedRoute>

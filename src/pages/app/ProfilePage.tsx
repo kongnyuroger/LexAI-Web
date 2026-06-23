@@ -9,6 +9,7 @@ import {
   Star,
   BarChart2,
   ShieldCheck,
+  KeyRound,
 } from 'lucide-react'
 import {
   Button,
@@ -85,13 +86,22 @@ export default function ProfilePage() {
         <Card className="mb-5">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-primary-900 text-white flex items-center justify-center text-lg font-semibold shrink-0 shadow-soft">
-                {isLoading ? (
-                  <User className="w-5 h-5" />
-                ) : (
-                  user?.fullName?.[0]?.toUpperCase() ?? <User className="w-5 h-5" />
-                )}
-              </div>
+              {user?.avatarUrl ? (
+                <img
+                  src={user.avatarUrl}
+                  alt=""
+                  referrerPolicy="no-referrer"
+                  className="w-12 h-12 rounded-2xl object-cover shrink-0 shadow-soft"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-2xl bg-primary-900 text-white flex items-center justify-center text-lg font-semibold shrink-0 shadow-soft">
+                  {isLoading ? (
+                    <User className="w-5 h-5" />
+                  ) : (
+                    user?.fullName?.[0]?.toUpperCase() ?? <User className="w-5 h-5" />
+                  )}
+                </div>
+              )}
               <div>
                 {isLoading ? (
                   <>
@@ -118,6 +128,11 @@ export default function ProfilePage() {
               <>
                 <InfoRow icon={User} label="Full name" value={user?.fullName ?? '—'} />
                 <InfoRow icon={Mail} label="Email" value={user?.email ?? '—'} />
+                <InfoRow
+                  icon={KeyRound}
+                  label="Signed in with"
+                  value={user?.authProvider === 'GOOGLE' ? 'Google' : 'Email & Password'}
+                />
                 <InfoRow
                   icon={CreditCard}
                   label="Member since"

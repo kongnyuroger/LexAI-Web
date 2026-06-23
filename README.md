@@ -70,6 +70,35 @@ The e2e tests mock all API responses via Playwright's route interception — **n
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `VITE_API_BASE_URL` | Yes | `http://localhost:3000` | Backend REST API base URL (no trailing slash) |
+| `VITE_SUPABASE_URL` | For Google sign-in | — | Supabase project URL, used only to initiate Google OAuth. See [Google OAuth Setup](#google-oauth-setup) |
+| `VITE_SUPABASE_ANON_KEY` | For Google sign-in | — | Supabase anon/public key (not the service role key). See [Google OAuth Setup](#google-oauth-setup) |
+
+---
+
+## Google OAuth Setup
+
+"Sign in with Google" uses Supabase purely as an OAuth intermediary: Supabase handles the redirect to and from Google, and our `/auth/callback` page hands the resulting Supabase access token to `lexai-backend`'s `POST /auth/google`, which issues this app's own JWT. Supabase's session is discarded immediately after that exchange — it is never used as a source of truth in the frontend.
+
+**1. Get your Supabase credentials**
+
+In the [Supabase dashboard](https://supabase.com/dashboard), open your project → **Settings → API**, and copy the **Project URL** and **anon/public key** into `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env`. Do not use the service role key — it must never be exposed to the frontend.
+
+**2. Register the redirect URL in two places**
+
+Both of the following must list the same redirect URL, or Google will return a `redirect_uri_mismatch` error:
+
+- **Supabase dashboard** → Authentication → URL Configuration → **Redirect URLs**
+- **Google Cloud Console** → APIs & Services → Credentials → your OAuth 2.0 Client → **Authorized redirect URIs**
+
+For local development, the redirect URL is:
+
+```
+http://localhost:5173/auth/callback
+```
+
+**3. Enable the Google provider in Supabase**
+
+Follow [Supabase's Google OAuth guide](https://supabase.com/docs/guides/auth/social-login/auth-google) to create a Google OAuth client and enable the Google provider under Authentication → Providers. That guide covers the Google Cloud Console setup in full detail — it isn't duplicated here.
 
 ---
 
@@ -80,7 +109,7 @@ src/
 ├── components/
 │   ├── auth/         # ProtectedRoute, GuestRoute guards
 │   ├── layout/       # AppShell, PublicHeader, PublicFooter
-│   └── ui/           # Design-system components (Button, Input, Badge, Modal, Toast, …)
+│   └── ui/           # Design-system components (Button, GoogleSignInButton, Input, Badge, Modal, Toast, …)
 ├── contexts/
 │   └── ToastContext.tsx  # Global toast notifications + useToast hook
 ├── hooks/            # useDocuments, useUsage, useSessionRestore
@@ -89,7 +118,8 @@ src/
 │   └── PublicLayout.tsx  # Unauthenticated pages wrapper
 ├── lib/
 │   ├── api.ts        # Axios instance with Bearer auth + 401 refresh + 5xx event
-│   ├── authApi.ts    # login, register, getMe
+│   ├── authApi.ts    # login, register, getMe, initiateGoogleLogin, googleLogin
+│   ├── supabase.ts   # Supabase client — Google OAuth initiation/callback only, see README
 │   ├── analysisApi.ts# triggerAnalysis, getAnalysis, getChatHistory, sendChatMessage
 │   ├── dateUtils.ts  # formatDistanceToNow, formatDate
 │   ├── documentsApi.ts # getDocuments, getDocument, getUsage
@@ -97,7 +127,7 @@ src/
 │   └── utils.ts      # cn() (clsx + tailwind-merge)
 ├── pages/
 │   ├── app/          # Dashboard, Upload, DocumentDetail, DocumentChat, Profile
-│   ├── auth/         # Login, Register
+│   ├── auth/         # Login, Register, GoogleCallbackPage (/auth/callback)
 │   ├── dev/          # ComponentsPage (dev-only showcase, /dev/components)
 │   └── LandingPage, NotFoundPage
 ├── stores/
@@ -125,6 +155,7 @@ e2e/                  # Playwright smoke tests
 | HTTP client | Axios with Bearer auth interceptor + token refresh + 5xx global toast |
 | Global state | Zustand v5 (auth/session only) |
 | Forms/validation | React Hook Form + Zod |
+| Auth (Google OAuth) | Supabase JS client (OAuth intermediary only — see [Google OAuth Setup](#google-oauth-setup)) |
 | Icons | lucide-react |
 | Testing (unit) | Vitest + React Testing Library |
 | Testing (e2e) | Playwright (chromium, route-mocked) |
@@ -147,6 +178,7 @@ e2e/                  # Playwright smoke tests
 - [x] Task 9 — Public landing page: hero, how-it-works steps, risk detection list, trust/disclaimer section, final CTA — fully responsive
 - [x] Task 10 — Polish: global `ErrorBoundary`, `NotFoundPage`, 5xx global toast via `CustomEvent`, `scrollIntoView` stub for tests, canonical Tailwind v4 class names, ARIA labels throughout
 - [x] Task 11 — Testing & CI: 24 unit tests (auth forms, upload, chat), 5 Playwright smoke tests, GitHub Actions pipeline
+- [x] Task 12 — Google OAuth: Supabase-backed "Sign in with Google" (`/auth/callback` handoff to `POST /auth/google`), Google sign-in button on login/register, Google avatar in nav and profile
 
 ### Future (post-MVP)
 
@@ -168,3 +200,5 @@ e2e/                  # Playwright smoke tests
 | Token storage | `localStorage` used for MVP. Revisit `httpOnly` cookies before production (see `src/lib/api.ts`) |
 | `POST /documents/:id/chat` | Response shape `{ message: ChatMessage }` — verify with backend |
 | `POST /auth/register` | Returns `{ accessToken, refreshToken }` — if it only returns a user, the auto-login step in RegisterPage handles it |
+| `POST /auth/google` | Accepts `{ accessToken }` (the Supabase access token) and returns `{ accessToken, refreshToken }`, mirroring `POST /auth/login` — verify with backend |
+| `GET /auth/me` | Assumed to return `avatarUrl` (nullable) and `authProvider` (`'EMAIL' \| 'GOOGLE'`) so the UI can show a Google profile picture and sign-in method — verify with backend |

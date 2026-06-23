@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/AppLayout'
 import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/auth/LoginPage'
 import RegisterPage from '@/pages/auth/RegisterPage'
+import GoogleCallbackPage from '@/pages/auth/GoogleCallbackPage'
 import DashboardPage from '@/pages/app/DashboardPage'
 import UploadPage from '@/pages/app/UploadPage'
 import DocumentDetailPage from '@/pages/app/DocumentDetailPage'
@@ -27,6 +28,12 @@ const devRoutes = import.meta.env.DEV
 
 const router = createBrowserRouter([
   ...devRoutes,
+
+  // Unguarded — the user is mid-OAuth-handoff here, neither authenticated
+  // (ProtectedRoute) nor a plain guest on a login/register form (GuestRoute).
+  // Not nested under PublicLayout either, so it gets no header/footer chrome,
+  // matching the full-screen treatment of /login and /register.
+  { path: '/auth/callback', element: <GoogleCallbackPage /> },
 
   {
     element: <PublicLayout />,

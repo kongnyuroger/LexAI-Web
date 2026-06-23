@@ -33,10 +33,12 @@ interface AppShellProps {
   children: React.ReactNode
   /** User display name shown in the header menu */
   userName?: string
+  /** Google profile picture, when signed in with Google */
+  avatarUrl?: string | null
   onLogout?: () => void
 }
 
-export default function AppShell({ children, userName, onLogout }: AppShellProps) {
+export default function AppShell({ children, userName, avatarUrl, onLogout }: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const navigate = useNavigate()
@@ -78,9 +80,18 @@ export default function AppShell({ children, userName, onLogout }: AppShellProps
             aria-haspopup="true"
             className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-slate-100 transition-colors text-sm text-slate-700 font-medium"
           >
-            <span className="w-7 h-7 rounded-full bg-primary-900 text-white flex items-center justify-center text-xs font-semibold shrink-0">
-              {userName ? userName[0].toUpperCase() : <User className="w-4 h-4" />}
-            </span>
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt=""
+                referrerPolicy="no-referrer"
+                className="w-7 h-7 rounded-full object-cover shrink-0"
+              />
+            ) : (
+              <span className="w-7 h-7 rounded-full bg-primary-900 text-white flex items-center justify-center text-xs font-semibold shrink-0">
+                {userName ? userName[0].toUpperCase() : <User className="w-4 h-4" />}
+              </span>
+            )}
             <span className="hidden sm:block max-w-32 truncate">{userName ?? 'Account'}</span>
             <ChevronDown className={cn('w-3.5 h-3.5 text-slate-400 transition-transform', userMenuOpen && 'rotate-180')} />
           </button>
