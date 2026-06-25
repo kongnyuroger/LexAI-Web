@@ -201,4 +201,7 @@ e2e/                  # Playwright smoke tests
 | `POST /documents/:id/chat` | Response shape `{ message: ChatMessage }` — verify with backend |
 | `POST /auth/register` | Returns `{ accessToken, refreshToken }` — if it only returns a user, the auto-login step in RegisterPage handles it |
 | `POST /auth/google` | Accepts `{ accessToken }` (the Supabase access token) and returns `{ accessToken, refreshToken }`, mirroring `POST /auth/login` — verify with backend |
-| `GET /auth/me` | Assumed to return `avatarUrl` (nullable) and `authProvider` (`'EMAIL' \| 'GOOGLE'`) so the UI can show a Google profile picture and sign-in method — verify with backend |
+| `GET /auth/me` | Assumed to return `avatarUrl` (nullable) and `authProvider` (`'EMAIL' \| 'GOOGLE'`) so the UI can show a Google profile picture and sign-in method — verify withbackend |
+
+
+Author: Kongnyu Roger
