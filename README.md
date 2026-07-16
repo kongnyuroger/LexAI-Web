@@ -204,4 +204,4 @@ e2e/                  # Playwright smoke tests
 | `GET /auth/me` | Assumed to return `avatarUrl` (nullable) and `authProvider` (`'EMAIL' \| 'GOOGLE'`) so the UI can show a Google profile picture and sign-in method — verify withbackend |
 
 
-Authou: Roger
+Authou: Kongnyu Roger
